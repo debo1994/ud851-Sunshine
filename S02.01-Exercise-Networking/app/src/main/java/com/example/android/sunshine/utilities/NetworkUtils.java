@@ -15,9 +15,15 @@
  */
 package com.example.android.sunshine.utilities;
 
+import android.net.Uri;
+
+import com.example.android.sunshine.data.SunshinePreferences;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -28,11 +34,9 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String DYNAMIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/weather";
+    private static final String DYNAMIC_WEATHER_URL = "https://andfun-weather.udacity.com/weather";
 
-    private static final String STATIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/staticweather";
+    private static final String STATIC_WEATHER_URL = "https://andfun-weather.udacity.com/staticweather";
 
     private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
 
@@ -66,7 +70,19 @@ public final class NetworkUtils {
      */
     public static URL buildUrl(String locationQuery) {
         // TODO (1) Fix this method to return the URL used to query Open Weather Map's API
-        return null;
+        Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, locationQuery)
+                .build();
+
+        URL url = null;
+
+        try{
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
     }
 
     /**
